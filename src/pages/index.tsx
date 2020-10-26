@@ -31,7 +31,7 @@ const ColorLink = styled.a<{color: string}>`
     transition: background-color linear 0.2s;
   }
   padding: 4px 6px;
-  border-radius: 8px;
+  border-radius: 6px;
   display: inline-block;
 `
 
