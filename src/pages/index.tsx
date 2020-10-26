@@ -28,7 +28,8 @@ const ColorLink = styled.a<{color: string}>`
   &:hover {
     color: white;
     background-color: ${(props) => props.color};
-    transition: background-color linear 0.2s;
+    transition: all linear 0.1s;
+    box-shadow: 2px 2px 6px 1px #b8b8b8;
   }
   padding: 4px 6px;
   border-radius: 6px;
