@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { graphql, PageProps } from "gatsby"
 import Img from "gatsby-image"
 import { MyQueryQuery } from "../../graphql-types"
+import { Helmet } from 'react-helmet'
 
 const ImageContainer = styled.div`
   border-radius: 50%;
@@ -62,6 +63,11 @@ interface HomePageProps extends PageProps {
 const Home: React.FC<HomePageProps> = ({data}) => {
   return (
     <Container>
+      <Helmet>
+        <title>
+          {data.site.siteMetadata.title ?? "kylejm"}
+        </title>
+      </Helmet>
       <ImageContainer>
         <Img fluid={data.file.childImageSharp.fluid} />
       </ImageContainer>
@@ -100,6 +106,7 @@ export const query = graphql`
     }
     site {
       siteMetadata {
+        title
         links {
           name
           url

@@ -34,6 +34,7 @@ module.exports = {
     `gatsby-plugin-sharp`, 
     `gatsby-transformer-sharp`,
     `gatsby-plugin-graphql-codegen`,
+    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
