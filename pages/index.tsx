@@ -103,7 +103,7 @@ const Home: React.FC = () => {
         </title>
       </Head>
       <ImageContainer>
-        <Image src={meImage} />
+        <Image src={meImage} placeholder="blur" />
       </ImageContainer>
       <Title>
         <H1>
