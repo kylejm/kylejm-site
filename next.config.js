@@ -1,5 +1,6 @@
 module.exports = {
   reactStrictMode: true,
+  target: 'serverless',
   publicRuntimeConfig: {
     siteMetadata: {
       title: "kylejm",
