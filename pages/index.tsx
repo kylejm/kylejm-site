@@ -115,7 +115,7 @@ const Home: React.FC = () => {
       </Subtitle>
       <Grid>
         {links.map((link => (
-          <div>
+          <div key={link.url}>
             <ColorLink color={link.color} href={link.url}>
               {link.name}
             </ColorLink>
