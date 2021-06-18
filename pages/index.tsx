@@ -1,9 +1,9 @@
-import React from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import styled from 'styled-components'
-import { graphql, PageProps } from "gatsby"
-import Img from "gatsby-image"
-import { MyQueryQuery } from "../../graphql-types"
-import { Helmet } from 'react-helmet'
+import Head from 'next/head'
+import meImage from '../public/me.jpg'
+import Image from 'next/image'
+import getConfig from 'next/config'
 
 const ImageContainer = styled.div`
   border-radius: 50%;
@@ -57,20 +57,53 @@ const Container = styled.div`
   transform: translate(-50%, -50%);
 `
 
-interface HomePageProps extends PageProps {
-  data: MyQueryQuery
-}
+const CenterContainer = styled.div`
+  font-family: "Arial";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
 
-const Home: React.FC<HomePageProps> = ({data}) => {
+const useMediaQuery = (width: number) => {
+  const [targetReached, setTargetReached] = useState(false);
+
+  const updateTarget = useCallback((e) => {
+    if (e.matches) {
+      setTargetReached(true);
+    } else {
+      setTargetReached(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia(`(max-width: ${width}px)`);
+    media.addListener(updateTarget);
+
+    // Check on mount (callback is not called until a change occurs)
+    if (media.matches) {
+      setTargetReached(true);
+    }
+
+    return () => media.removeListener(updateTarget);
+  }, []);
+
+  return targetReached;
+};
+
+const { publicRuntimeConfig } = getConfig()
+
+const Home: React.FC = () => {
+  const links: { color: string; url: string; name: string }[] = publicRuntimeConfig.siteMetadata.links
   return (
     <Container>
-      <Helmet>
+      <Head>
         <title>
-          {data.site.siteMetadata.title ?? "kylejm"}
+          {publicRuntimeConfig.siteMetadata.title ?? "kylejm"}
         </title>
-      </Helmet>
+      </Head>
       <ImageContainer>
-        <Img fluid={data.file.childImageSharp.fluid} />
+        <Image src={meImage} />
       </ImageContainer>
       <Title>
         <H1>
@@ -81,7 +114,7 @@ const Home: React.FC<HomePageProps> = ({data}) => {
         I like to build teams, products and software.
       </Subtitle>
       <Grid>
-        {data.site.siteMetadata.links.map((link => (
+        {links.map((link => (
           <div>
             <ColorLink color={link.color} href={link.url}>
               {link.name}
@@ -94,26 +127,3 @@ const Home: React.FC<HomePageProps> = ({data}) => {
 }
 
 export default Home;
-
-export const query = graphql`
-  query MyQuery {
-    file(relativePath: { eq: "me.jpg" }) {
-      childImageSharp {
-        # Specify the image processing specifications right in the query.
-        fluid {
-          ...GatsbyImageSharpFluid
-        }
-      }
-    }
-    site {
-      siteMetadata {
-        title
-        links {
-          name
-          url
-          color
-        }
-      }
-    }
-  }
-`
